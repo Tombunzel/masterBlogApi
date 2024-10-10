@@ -9,14 +9,17 @@ window.onload = function() {
     }
 }
 
-// Function to fetch all the posts from the API and display them on the page
-function loadPosts() {
+// Function to fetch all the posts from the API with pagination and display them
+function loadPosts(page = 1, limit = 10) {
     // Retrieve the base URL from the input field and save it to local storage
     var baseUrl = document.getElementById('api-base-url').value;
     localStorage.setItem('apiBaseUrl', baseUrl);
 
-    // Use the Fetch API to send a GET request to the /posts endpoint
-    fetch(baseUrl + '/posts')
+    // Construct the URL with page and limit query parameters
+    var apiUrl = `${baseUrl}/posts?page=${page}&limit=${limit}`;
+
+    // Use the Fetch API to send a GET request to the /posts endpoint with pagination
+    fetch(apiUrl)
         .then(response => response.json())  // Parse the JSON data from the response
         .then(data => {  // Once the data is ready, we can use it
             // Clear out the post container first
@@ -31,9 +34,38 @@ function loadPosts() {
                 <button onclick="deletePost(${post.id})">Delete</button>`;
                 postContainer.appendChild(postDiv);
             });
+
+            // Add pagination controls (if needed)
+            addPaginationControls(page, limit);
         })
         .catch(error => console.error('Error:', error));  // If an error occurs, log it to the console
 }
+
+function addPaginationControls(currentPage, limit) {
+    const paginationContainer = document.getElementById('pagination-controls');
+    paginationContainer.innerHTML = '';
+
+    // Create a "Previous" button
+    if (currentPage > 1) {
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'Previous';
+        prevButton.onclick = () => loadPosts(currentPage - 1, limit);
+        paginationContainer.appendChild(prevButton);
+    }
+
+    // Create a button for the current page (you can extend this to create more page buttons)
+    const currentButton = document.createElement('button');
+    currentButton.textContent = currentPage;
+    currentButton.classList.add('active');  // Mark the current page as active
+    paginationContainer.appendChild(currentButton);
+
+    // Create a "Next" button
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next';
+    nextButton.onclick = () => loadPosts(currentPage + 1, limit);
+    paginationContainer.appendChild(nextButton);
+}
+
 
 // Function to send a POST request to the API to add a new post
 function addPost() {
