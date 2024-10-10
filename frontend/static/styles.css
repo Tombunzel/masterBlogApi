@@ -89,3 +89,45 @@ body {
 .post button:hover {
     background-color: #cc0000;
 }
+
+/* Pagination container styling */
+#pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Pagination button styling */
+#pagination-controls button {
+    background-color: #4466ee; /* Same blue as the other buttons */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for pagination buttons */
+#pagination-controls button:hover {
+    background-color: #3355dd; /* Darker blue on hover */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Disabled button styling */
+#pagination-controls button:disabled {
+    background-color: #ddd; /* Light gray for disabled state */
+    color: #aaa; /* Gray text color */
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Optional styling for the active page button */
+#pagination-controls .active {
+    background-color: #2233aa; /* Darker blue for active page */
+    cursor: default;
+    box-shadow: none;
+}
+
