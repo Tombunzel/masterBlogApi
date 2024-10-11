@@ -1,7 +1,12 @@
 import json
+import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+POSTS_FILE_PATH = os.path.join(BASE_DIR, 'posts.json')
 
 app = Flask(__name__)
 CORS(app)
@@ -21,14 +26,14 @@ app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 
 def create_new_file():
     """create a new JSON storage file"""
-    with open("posts.json", "w", encoding="utf-8") as handle:
+    with open(POSTS_FILE_PATH, "w", encoding="utf-8") as handle:
         json.dump([{}], handle)
 
 
 def read_posts_from_file():
     """fetch all posts from storage"""
     try:
-        with open("posts.json", "r", encoding="utf-8") as handle:
+        with open(POSTS_FILE_PATH, "r", encoding="utf-8") as handle:
             data = json.load(handle)
             return data
 
@@ -40,7 +45,7 @@ def read_posts_from_file():
 def write_to_storage(posts):
     """write posts to persistent storage"""
     try:
-        with open("posts.json", "w", encoding="utf-8") as handle:
+        with open(POSTS_FILE_PATH, "w", encoding="utf-8") as handle:
             json.dump(posts, handle, indent=2)
     except FileNotFoundError:
         return create_new_file()
