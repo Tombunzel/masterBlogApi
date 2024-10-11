@@ -42,12 +42,14 @@
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by either content or title",
+            "description": "Sort by content, title, author or date",
             "required": false,
             "type": "string",
             "enum": [
               "content",
-              "title"
+              "title",
+              "author",
+              "date"
             ]
           },
           {
@@ -179,16 +181,31 @@
           {
             "name": "title",
             "in": "query",
-            "description": "Enter search query to look in all posts titles",
+            "description": "Search in titles",
             "required": false,
             "type": "string"
           },
           {
             "name": "content",
             "in": "query",
-            "description": "Enter search query to look in all posts content",
+            "description": "Search in content",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "author",
+            "in": "query",
+            "description": "Search posts by author",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "Search posts by date (YYYY-MM-DD)",
+            "required": false,
+            "type": "string",
+            "example": "2023-12-31"
           }
         ],
         "tags": [
@@ -215,6 +232,16 @@
           "type": "string",
           "description": "The content of the blog post",
           "example": "This is the content of my post."
+        },
+        "author":  {
+          "type": "string",
+          "description": "The author of the blog post",
+          "example": "Roald Dahl"
+        },
+        "date":  {
+          "type": "string",
+          "description": "YYYY-MM-DD",
+          "example": "2023-12-31"
         }
       },
       "required": [
@@ -234,6 +261,16 @@
           "type": "string",
           "description": "The new content of the blog post",
           "example": "My updated content."
+        },
+        "author":  {
+          "type": "string",
+          "description": "The author of the blog post",
+          "example": "Roald Dahl"
+        },
+        "date":  {
+          "type": "string",
+          "description": "YYYY-MM-DD",
+          "example": "2023-12-31"
         }
       }
     }
