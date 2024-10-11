@@ -1,0 +1,108 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Masterblog API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:5002"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Post",
+            "description": "Post API - CRUD"
+        }
+    ],
+    "paths": {
+        "/api/posts": {
+            "get": {
+                "summary": "Return all posts",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                  {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "Limit amount of posts per page",
+                    "default": 10,
+                    "required": false,
+                    "schema": {
+                    }
+                  },
+                  {
+                    "name": "page",
+                    "in": "query",
+                    "description": "Page to display",
+                    "default": 1,
+                    "required": false,
+                    "schema": {
+                    }
+                  }
+                ],
+                "tags": [
+                    "Post"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            },
+            "post": {
+          "summary": "Adds a post to the blog",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "Post",
+              "in": "body",
+              "description": "Post's information",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/AddPost"
+              }
+            }
+          ],
+          "tags": [
+              "Post"
+          ],
+          "responses": {
+            "201": {
+              "description": "Post added successfully"
+            },
+            "400": {
+              "description": "Invalid request data"
+            }
+          }
+        }
+        }
+    },
+    "definitions": {
+    "AddPost": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title of the blog post",
+          "example": "My first blog post"
+        },
+        "content": {
+          "type": "string",
+          "description": "The content of the blog post",
+          "example": "This is the content of my first post."
+        }
+      },
+      "required": [
+        "title",
+        "content"
+      ]
+    }
+  }
+}
