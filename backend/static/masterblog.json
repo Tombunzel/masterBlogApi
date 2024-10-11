@@ -6,7 +6,9 @@
   },
   "host": "127.0.0.1:5002",
   "basePath": "/api",
-  "schemes": ["http"],
+  "schemes": [
+    "http"
+  ],
   "tags": [
     {
       "name": "Post",
@@ -43,7 +45,10 @@
             "description": "Sort by either content or title",
             "required": false,
             "type": "string",
-            "enum": ["content", "title"]
+            "enum": [
+              "content",
+              "title"
+            ]
           },
           {
             "name": "order",
@@ -51,7 +56,10 @@
             "description": "Order descending or descending",
             "required": false,
             "type": "string",
-            "enum": ["desc", "asc"]
+            "enum": [
+              "desc",
+              "asc"
+            ]
           }
         ],
         "tags": [
@@ -161,7 +169,7 @@
         }
       }
     },
-        "/posts/search": {
+    "/posts/search": {
       "get": {
         "summary": "Search through all posts",
         "produces": [
