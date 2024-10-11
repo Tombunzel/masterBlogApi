@@ -1,90 +1,114 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "Masterblog API",
-        "version": "1.0.0"
-    },
-    "servers": [
-        {
-            "url": "http://127.0.0.1:5002"
-        }
-    ],
-    "tags": [
-        {
-            "name": "Post",
-            "description": "Post API - CRUD"
-        }
-    ],
-    "paths": {
-        "/api/posts": {
-            "get": {
-                "summary": "Return all posts",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                  {
-                    "name": "limit",
-                    "in": "query",
-                    "description": "Limit amount of posts per page",
-                    "default": 10,
-                    "required": false,
-                    "schema": {
-                    }
-                  },
-                  {
-                    "name": "page",
-                    "in": "query",
-                    "description": "Page to display",
-                    "default": 1,
-                    "required": false,
-                    "schema": {
-                    }
-                  }
-                ],
-                "tags": [
-                    "Post"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    }
-                }
-            },
-            "post": {
-          "summary": "Adds a post to the blog",
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "Post",
-              "in": "body",
-              "description": "Post's information",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/AddPost"
-              }
-            }
-          ],
-          "tags": [
-              "Post"
-          ],
-          "responses": {
-            "201": {
-              "description": "Post added successfully"
-            },
-            "400": {
-              "description": "Invalid request data"
-            }
+  "swagger": "2.0",
+  "info": {
+    "title": "Masterblog API",
+    "version": "1.0.0"
+  },
+  "host": "127.0.0.1:5002",
+  "basePath": "/api",
+  "schemes": ["http"],
+  "tags": [
+    {
+      "name": "Post",
+      "description": "Post API - CRUD"
+    }
+  ],
+  "paths": {
+    "/posts": {
+      "get": {
+        "summary": "Return all posts",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit amount of posts per page",
+            "default": 10,
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page to display",
+            "default": 1,
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "tags": [
+          "Post"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
           }
         }
+      },
+      "post": {
+        "summary": "Adds a post to the blog",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Post",
+            "in": "body",
+            "description": "Post's information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddPost"
+            }
+          }
+        ],
+        "tags": [
+          "Post"
+        ],
+        "responses": {
+          "201": {
+            "description": "Post added successfully"
+          },
+          "400": {
+            "description": "Invalid request data"
+          }
         }
+      }
     },
-    "definitions": {
+    "/posts/{post_id}": {
+      "delete": {
+        "summary": "Delete post by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "description": "The ID of the post to delete",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "tags": [
+          "Post"
+        ],
+        "responses": {
+          "200": {
+            "description": "Post deleted successfully"
+          },
+          "404": {
+            "description": "Couldn't find post"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
     "AddPost": {
       "type": "object",
       "properties": {
