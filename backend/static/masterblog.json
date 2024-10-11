@@ -105,6 +105,76 @@
             "description": "Couldn't find post"
           }
         }
+      },
+      "put": {
+        "summary": "Updates a post by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "description": "The ID of the post to update",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "Post",
+            "in": "body",
+            "description": "Post's new information",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UpdatePost"
+            }
+          }
+        ],
+        "tags": [
+          "Post"
+        ],
+        "responses": {
+          "200": {
+            "description": "Post updated successfully"
+          },
+          "404": {
+            "description": "Post not found"
+          }
+        }
+      }
+    },
+        "/posts/search": {
+      "get": {
+        "summary": "Search through all posts",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Enter search query to look in all posts titles",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "content",
+            "in": "query",
+            "description": "Enter search query to look in all posts content",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Post"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
       }
     }
   },
@@ -115,18 +185,33 @@
         "title": {
           "type": "string",
           "description": "The title of the blog post",
-          "example": "My first blog post"
+          "example": "My blog post"
         },
         "content": {
           "type": "string",
           "description": "The content of the blog post",
-          "example": "This is the content of my first post."
+          "example": "This is the content of my post."
         }
       },
       "required": [
         "title",
         "content"
       ]
+    },
+    "UpdatePost": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The new title for the blog post",
+          "example": "My updated title"
+        },
+        "content": {
+          "type": "string",
+          "description": "The new content of the blog post",
+          "example": "My updated content."
+        }
+      }
     }
   }
 }
