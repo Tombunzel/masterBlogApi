@@ -36,6 +36,22 @@
             "default": 1,
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by either content or title",
+            "required": false,
+            "type": "string",
+            "enum": ["content", "title"]
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Order descending or descending",
+            "required": false,
+            "type": "string",
+            "enum": ["desc", "asc"]
           }
         ],
         "tags": [
