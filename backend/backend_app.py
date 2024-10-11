@@ -20,11 +20,13 @@ app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 
 
 def create_new_file():
+    """create a new JSON storage file"""
     with open("posts.json", "w", encoding="utf-8") as handle:
         json.dump([{}], handle)
 
 
 def read_posts_from_file():
+    """fetch all posts from storage"""
     try:
         with open("posts.json", "r", encoding="utf-8") as handle:
             data = json.load(handle)
@@ -36,6 +38,7 @@ def read_posts_from_file():
 
 
 def write_to_storage(posts):
+    """write posts to persistent storage"""
     try:
         with open("posts.json", "w", encoding="utf-8") as handle:
             json.dump(posts, handle, indent=2)
@@ -44,6 +47,7 @@ def write_to_storage(posts):
 
 
 def paginate_posts(posts, page, limit):
+    """logic for pagination"""
     start_index = (page - 1) * limit
     end_index = start_index + limit
 
@@ -53,6 +57,11 @@ def paginate_posts(posts, page, limit):
 
 @app.route('/api/posts', methods=['GET'])
 def get_posts():
+    """
+    GET method to get paginated posts
+    accepts optional 'sort', 'order', 'limit' and 'page' query parameters
+    returns the posts and a 200 status code
+    """
     posts = read_posts_from_file()
     sort = request.args.get('sort', default=None)
     order = request.args.get('order', default=None)
@@ -73,6 +82,12 @@ def get_posts():
 
 
 def sort_posts(posts, sort):
+    """
+    sorts posts according to 'sort' parameter
+    :param posts: all posts
+    :param sort: what to sort by
+    :return: posts sorted accordingly or 400 bad input status code
+    """
     if sort is None:
         return posts
 
@@ -83,7 +98,7 @@ def sort_posts(posts, sort):
         'date': lambda p: p['date']
     }
 
-    if sort not in sort_options and sort is not None:
+    if sort not in sort_options:
         return jsonify({
             "error": "400",
             "description": "Bad input on argument <sort>"
@@ -93,6 +108,12 @@ def sort_posts(posts, sort):
 
 
 def order_posts(posts, order):
+    """
+    orders posts according to 'order' parameter
+    :param posts: all posts
+    :param order: either 'asc', 'desc' or 'None'
+    :return: posts in ascending or descending order, or 400 bad input
+    """
     if order not in ['asc', 'desc', None]:
         return jsonify({
             "error": "400",
@@ -107,6 +128,10 @@ def order_posts(posts, order):
 
 @app.route('/api/posts', methods=['POST'])
 def add_post():
+    """
+    POST method to add a post to storage
+    :return: the added post, or 400 status code for missing argument
+    """
     posts = read_posts_from_file()
     data = request.get_json()
     if 'title' not in data:
@@ -129,6 +154,7 @@ def add_post():
     new_post = request.get_json()
     new_id = max(post['id'] for post in posts) + 1
     new_post['id'] = new_id
+    new_post['likes'] = 0
     posts.append(new_post)
     write_to_storage(posts)
     return jsonify(new_post), 201
@@ -136,6 +162,11 @@ def add_post():
 
 @app.route('/api/posts/<int:post_id>', methods=['DELETE'])
 def delete_post(post_id):
+    """
+    DELETE method to remove post from storage
+    :param post_id: post-ID to delete
+    :return: status code 200 if deleted, 404 if post-ID not found
+    """
     posts = read_posts_from_file()
     for post in posts:
         if post['id'] == post_id:
@@ -150,6 +181,11 @@ def delete_post(post_id):
 
 @app.route('/api/posts/<int:post_id>', methods=['PUT'])
 def update_post(post_id):
+    """
+    PUT method to update posts content
+    :param post_id: post-ID to update
+    :return: updated post or 404 status code if post-ID not found
+    """
     posts = read_posts_from_file()
     new_data = request.get_json()
     for post in posts:
@@ -164,6 +200,10 @@ def update_post(post_id):
 
 @app.route('/api/posts/search', methods=['GET'])
 def search_post():
+    """
+    GET method with opt. search queries 'title', 'content', 'author', 'date'
+    :return: posts matching all search queries
+    """
     posts = read_posts_from_file()
     title = request.args.get('title', default='')
     content = request.args.get('content', default='')
